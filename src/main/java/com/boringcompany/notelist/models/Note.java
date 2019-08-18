@@ -22,9 +22,15 @@ public final class Note implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  @Column()
+  /**
+   * Actual name length is 99 = 200 / 2 - 1.
+   * Division for reserving space for 2 bytes characters.
+   * Subtraction for taking in account the last symbol, which considered empty.
+   */
+  @SuppressWarnings("checkstyle:magicnumber")
+  @Column(length = 200)
   private String name = "";
 
-  @Column()
+  @Column(columnDefinition = "TEXT")
   private String description = "";
 }

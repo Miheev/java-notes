@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NoteListApplicationTests {
+class ServletInitializerTests {
 
   @Test
-  public void shouldLoadApplication() {
-    MatcherAssert.assertThat(new NoteListApplication(), Matchers.notNullValue());
+  public void shouldLoadServlets() {
+    MatcherAssert.assertThat(new ServletInitializer(), Matchers.notNullValue());
   }
 }

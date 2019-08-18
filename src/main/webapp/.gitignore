@@ -1,6 +1,8 @@
-.directory
+node_modules
+
 /**/.sass
 /**/*.map
-node_modules
+
+.directory
 *.log
 .idea
