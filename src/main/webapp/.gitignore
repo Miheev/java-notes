@@ -1,0 +1,6 @@
+.directory
+/**/.sass
+/**/*.map
+node_modules
+*.log
+.idea
