@@ -21,6 +21,7 @@
 
     <skipCheck>${skipTests}</skipCheck>
     <skipData>${skipTests}</skipData>
+    <surefireArgLine>-Xmx2048m -XX:MaxPermSize=256m</surefireArgLine>
 
     <java.version>1.8</java.version>
 
@@ -32,7 +33,29 @@
     <db.password>postgres</db.password>
   </properties>
 
+  <profiles>
+    <profile>
+      <id>test</id>
+      <properties>
+        <db.url>jdbc:postgresql://postgres:5432/notelist</db.url>
+      </properties>
+    </profile>
+  </profiles>
+
 	<dependencies>
+    <!-- For Tomcat 7 and possibly 8 -->
+
+    <!--<dependency>-->
+      <!--<groupId>commons-digester</groupId>-->
+      <!--<artifactId>commons-digester</artifactId>-->
+      <!--<version>1.7</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>commons-fileupload</groupId>-->
+      <!--<artifactId>commons-fileupload</artifactId>-->
+      <!--<version>1.3.3</version>-->
+    <!--</dependency>-->
+
     <!-- SpringFox dependencies -->
 
     <dependency>
