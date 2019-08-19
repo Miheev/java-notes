@@ -61,6 +61,8 @@ public class NoteControllerTests {
     Assertions.assertNotNull(response.getBody());
     Assertions.assertTrue(response.getBody().getId() > 0);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+    noteService.deleteNote(response.getBody().getId());
   }
 
   @Test
@@ -74,6 +76,8 @@ public class NoteControllerTests {
     Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(response.getBody().getId(), noteSample.getId());
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+    noteService.deleteNote(noteSample.getId());
   }
 
   @Test
@@ -99,6 +103,8 @@ public class NoteControllerTests {
     Assertions.assertEquals(response.getBody().getId(), noteSample.getId());
     Assertions.assertEquals(response.getBody().getName(), noteSample.getName() + SUFFIX);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+    noteService.deleteNote(noteSample.getId());
   }
 
   @Test

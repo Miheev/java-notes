@@ -21,11 +21,10 @@
 
     <skipCheck>${skipTests}</skipCheck>
     <skipData>${skipTests}</skipData>
-    <surefireArgLine>-Xmx2048m -XX:MaxPermSize=256m</surefireArgLine>
+    <!--todo: fix or delete Jacoco ? SurrFire Java settings. Now such config is broke Jacoco report generation if active-->
+    <!--<surefireArgLine>-Xmx4096m -XX:MaxPermSize=256m</surefireArgLine>-->
 
     <java.version>1.8</java.version>
-
-    <!--<surefireArgLine>-Xmx4096m -XX:MaxPermSize=256m</surefireArgLine>-->
 
     <!-- database default configuration -->
     <db.url>jdbc:postgresql://localhost:5432/notelist</db.url>
