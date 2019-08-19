@@ -39,7 +39,7 @@ public class NoteController {
     response = Note.class,
     responseContainer = "List")
   @GetMapping(value = ENDPOINT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
   public List<Note> getAllNotes() {
@@ -50,7 +50,7 @@ public class NoteController {
     tags = {SwaggerDocumentationConfig.NOTE_LIST},
     response = Note.class)
   @PostMapping(value = ENDPOINT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
   public Note createNote(
@@ -65,7 +65,7 @@ public class NoteController {
     @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Note not found")
   })
   @GetMapping(value = ENDPOINT_ENTITY,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
   public ResponseEntity<Note> getNote(@ApiParam(value = "Note ID", required = true) @PathVariable final long noteId) {
@@ -79,7 +79,7 @@ public class NoteController {
     @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Note not found")
   })
   @PutMapping(value = ENDPOINT_ENTITY,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
   public ResponseEntity<Note> updateNote(
