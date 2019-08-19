@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class NoteServiceImpl implements NoteService {
     return noteRepository.save(noteDetails);
   }
 
+  @Transactional
   @Override
   public Optional<Note> updateNote(final long noteId, final Note noteDetails) {
     Optional<Note> noteRaw = getNote(noteId);
