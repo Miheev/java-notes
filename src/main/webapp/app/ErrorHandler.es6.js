@@ -41,8 +41,8 @@ function outError(httpError) {
 
 export const ErrorHandler = {
   destroy() {
-    errorElement = null;
     releaseLock();
+    errorElement = null;
   },
   linkElement(htmlElement) {
     errorElement = htmlElement;
