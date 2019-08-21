@@ -1,14 +1,16 @@
 package com.boringcompany.notelist.models;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.pojo.tester.api.assertion.Assertions;
 
 import static com.boringcompany.notelist.test.TestUtils.NOT_EXISTING_ENTITY_ID;
 import static com.boringcompany.notelist.test.TestUtils.assertEqualsAndHash;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class NoteTests {
+
   @Test
   public void shouldPassPOJOTests() {
     Assertions.assertPojoMethodsFor(Note.class)

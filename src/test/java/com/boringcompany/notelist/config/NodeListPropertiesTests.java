@@ -7,10 +7,11 @@ import static com.boringcompany.notelist.test.TestUtils.INT;
 import static com.boringcompany.notelist.test.TestUtils.assertEqualsAndHash;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.pojo.tester.api.assertion.Assertions;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class NodeListPropertiesTests {
   @Test
   public void shouldPassAppConfigPOJOTest() {
