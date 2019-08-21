@@ -18,7 +18,7 @@ Template for Simple Java Spring Web App
 
 ## Run application
 - from local environment:
-  - PostgreSQL server should be up and running on `localhost:5432`, tested with `9.5 version`.
+  - PostgreSQL server should be up and running on `localhost:5432`, tested with `9.5 and 11.5 version`.
   - Run command:
     - `./mvnw clean install && ./mvnw spring-boot:run`.
   - Run with skip tests and checks mode: 
