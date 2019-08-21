@@ -2,6 +2,7 @@ package com.boringcompany.notelist.services;
 
 import com.boringcompany.notelist.config.NodeListProperties;
 import com.boringcompany.notelist.models.Note;
+import com.boringcompany.notelist.models.NoteDTO;
 import com.boringcompany.notelist.repositories.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,11 @@ public class NoteServiceImpl implements NoteService {
   private final NodeListProperties appConfig;
 
   @Override
-  public List<Note> getAllNotes() {
+  public List<NoteDTO> getAllNotes() {
     return noteRepository.findAll(appConfig.getLimitedPageable())
-      .stream().collect(Collectors.toList());
+      .stream()
+      .map(NoteDTO::new)
+      .collect(Collectors.toList());
   }
 
   @Override
@@ -38,7 +41,7 @@ public class NoteServiceImpl implements NoteService {
 
   @Transactional
   @Override
-  public Optional<Note> updateNote(final long noteId, final Note noteDetails) {
+  public Optional<Note> updateNote(final long noteId, final NoteDTO noteDetails) {
     Optional<Note> noteRaw = getNote(noteId);
     if (!noteRaw.isPresent()) {
       return noteRaw;

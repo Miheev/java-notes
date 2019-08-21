@@ -14,17 +14,19 @@ async function sendRequest(url, method, body, defaultValue) {
 
   return fetch(url, options)
   .then(async response => {
-    let result = await response.json();
-    return {result, response};
+    let result = await response.text();
+
+    if (response.status > 399 && !result) {
+      throw new Error("Unexpected request error");
+    }
+
+    return {response, result: JSON.parse(result)};
   })
   .then(({result, response}) => {
     if (result.error && result.message) {
       let error = new Error(`${result.error}: ${result.message}`);
       error.data = result;
       throw error;
-    }
-    if (response.status > 399) {
-      throw new Error("Unexpected request error");
     }
     return result;
   })

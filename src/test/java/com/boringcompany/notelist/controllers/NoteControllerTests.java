@@ -1,5 +1,7 @@
 package com.boringcompany.notelist.controllers;
 
+import com.boringcompany.notelist.models.NoteDTO;
+import com.boringcompany.notelist.test.ErrorDTO;
 import com.boringcompany.notelist.models.Note;
 import com.boringcompany.notelist.services.NoteService;
 import com.boringcompany.notelist.test.TestUtils;
@@ -19,6 +21,18 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+/**
+ * In the UT scenario MockMvc should be used
+ * https://developer.okta.com/blog/2019/03/28/test-java-spring-boot-junit5
+ *
+ * @AutoConfigureMockMvc
+ * @ContextConfiguration(classes = {NoteRepository.class, NoteService.class, TestRestTemplate.class})
+ * @WebMvcTest
+ *
+ *
+ *  TestRestTemplate as (IT test tool) can be used with @SpringBootTest only
+ *  https://stackoverflow.com/questions/39213531/spring-boot-test-unable-to-inject-testresttemplate-and-mockmvc
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NoteControllerTests {
   private static final String COMMON_NAME = "test note";
@@ -56,7 +70,7 @@ public class NoteControllerTests {
   public void shouldCreateNote() {
     HttpEntity<Object> entity = noteCreateRequest();
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT, HttpMethod.POST, entity, Note.class);
+    ResponseEntity<NoteDTO> response = template.exchange(NoteController.ENDPOINT, HttpMethod.POST, entity, NoteDTO.class);
 
     Assertions.assertNotNull(response.getBody());
     Assertions.assertTrue(response.getBody().getId() > 0);
@@ -70,8 +84,8 @@ public class NoteControllerTests {
     HttpEntity<Object> entity = TestUtils.getHttpEntity(null);
     Note noteSample = saveNote();
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.GET, entity,
-      Note.class, noteSample.getId());
+    ResponseEntity<NoteDTO> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.GET, entity,
+      NoteDTO.class, noteSample.getId());
 
     Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(response.getBody().getId(), noteSample.getId());
@@ -84,10 +98,10 @@ public class NoteControllerTests {
   public void shouldNoteNotFoundOnGet() {
     HttpEntity<Object> entity = TestUtils.getHttpEntity(null);
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.GET, entity,
-      Note.class, TestUtils.NOT_EXISTING_ENTITY_ID);
+    ResponseEntity<ErrorDTO> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.GET, entity,
+      ErrorDTO.class, TestUtils.NOT_EXISTING_ENTITY_ID);
 
-    Assertions.assertNull(response.getBody());
+    Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
 
@@ -96,8 +110,8 @@ public class NoteControllerTests {
     HttpEntity<Object> entity = noteUpdateRequest();
     Note noteSample = saveNote();
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.PUT, entity,
-      Note.class, noteSample.getId());
+    ResponseEntity<NoteDTO> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.PUT, entity,
+      NoteDTO.class, noteSample.getId());
 
     Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(response.getBody().getId(), noteSample.getId());
@@ -111,10 +125,10 @@ public class NoteControllerTests {
   public void shouldNoteNotFoundOnUpdate() {
     HttpEntity<Object> entity = noteUpdateRequest();
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.PUT, entity,
-      Note.class, TestUtils.NOT_EXISTING_ENTITY_ID);
+    ResponseEntity<ErrorDTO> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.PUT, entity,
+      ErrorDTO.class, TestUtils.NOT_EXISTING_ENTITY_ID);
 
-    Assertions.assertNull(response.getBody());
+    Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
 
@@ -123,8 +137,8 @@ public class NoteControllerTests {
     HttpEntity<Object> entity = TestUtils.getHttpEntity(null);
     Note noteSample = saveNote();
 
-    ResponseEntity<Note> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.DELETE, entity,
-      Note.class, noteSample.getId());
+    ResponseEntity<NoteDTO> response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.DELETE, entity,
+      NoteDTO.class, noteSample.getId());
 
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
@@ -132,7 +146,7 @@ public class NoteControllerTests {
       Cover note not exist case
      */
     response = template.exchange(NoteController.ENDPOINT_ENTITY, HttpMethod.DELETE, entity,
-      Note.class, noteSample.getId());
+      NoteDTO.class, noteSample.getId());
 
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
   }

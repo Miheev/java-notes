@@ -2,6 +2,7 @@ package com.boringcompany.notelist.controllers;
 
 import com.boringcompany.notelist.config.SwaggerDocumentationConfig;
 import com.boringcompany.notelist.models.Note;
+import com.boringcompany.notelist.models.NoteDTO;
 import com.boringcompany.notelist.services.NoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,31 +37,31 @@ public class NoteController {
 
   @ApiOperation(value = "GET note list",
     tags = {SwaggerDocumentationConfig.NOTE_LIST},
-    response = Note.class,
+    response = NoteDTO.class,
     responseContainer = "List")
   @GetMapping(value = ENDPOINT,
     consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
-  public List<Note> getAllNotes() {
+  public List<NoteDTO> getAllNotes() {
     return noteService.getAllNotes();
   }
 
   @ApiOperation(value = "Save new note",
     tags = {SwaggerDocumentationConfig.NOTE_LIST},
-    response = Note.class)
+    response = NoteDTO.class)
   @PostMapping(value = ENDPOINT,
     consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
-  public Note createNote(
-    @ApiParam(value = "New note details", required = true) @Valid @RequestBody final Note noteDetails) {
-    return noteService.createNote(noteDetails);
+  public NoteDTO createNote(
+    @ApiParam(value = "New note details", required = true) @RequestBody final Note noteDetails) {
+    return new NoteDTO(noteService.createNote(noteDetails));
   }
 
   @ApiOperation(value = "GET note",
     tags = {SwaggerDocumentationConfig.NOTE_LIST},
-    response = Note.class)
+    response = NoteDTO.class)
   @ApiResponses({
     @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Note not found")
   })
@@ -68,13 +69,13 @@ public class NoteController {
     consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
-  public ResponseEntity<Note> getNote(@ApiParam(value = "Note ID", required = true) @PathVariable final long noteId) {
+  public ResponseEntity<NoteDTO> getNote(@ApiParam(value = "Note ID", required = true) @PathVariable final long noteId) {
     return optionalResponse(noteService.getNote(noteId));
   }
 
   @ApiOperation(value = "Update note",
     tags = {SwaggerDocumentationConfig.NOTE_LIST},
-    response = Note.class)
+    response = NoteDTO.class)
   @ApiResponses({
     @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Note not found")
   })
@@ -82,9 +83,9 @@ public class NoteController {
     consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
 
-  public ResponseEntity<Note> updateNote(
+  public ResponseEntity<NoteDTO> updateNote(
     @ApiParam(value = "Note ID", required = true) @PathVariable final long noteId,
-    @ApiParam(value = "Note details", required = true) @Valid @RequestBody final Note noteDetails) {
+    @ApiParam(value = "Note details", required = true) @RequestBody final NoteDTO noteDetails) {
     return optionalResponse(noteService.updateNote(noteId, noteDetails));
   }
 
@@ -107,8 +108,18 @@ public class NoteController {
     noteService.deleteNote(noteId);
   }
 
-  private ResponseEntity<Note> optionalResponse(final Optional<Note> note) {
-    return note.map(ResponseEntity::ok)
-      .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+  /**
+   * Error handling in Spring
+   * https://www.baeldung.com/exception-handling-for-rest-with-spring
+   * https://www.baeldung.com/spring-response-status-exception
+   *
+   * @param note Optional<Note>
+   * @return ResponseEntity<Note>
+   */
+  private ResponseEntity<NoteDTO> optionalResponse(final Optional<Note> note) {
+    return note
+      .map(NoteDTO::new)
+      .map(ResponseEntity::ok)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Provided note not found"));
   }
 }
