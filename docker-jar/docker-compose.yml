@@ -1,0 +1,33 @@
+#http://qaru.site/questions/2459576/docker-compose-tomcat-postgres-spring-boot-app-connection-issue-between-containers
+#https://blog.lukaspradel.com/dockerizing-a-tomcat-postgresql-java-web-application/
+version: "3.3"
+services:
+  postgres:
+    image: postgres:11.5
+    container_name: postgres
+    hostname: postgres
+    environment:
+    - POSTGRES_DB=notelist
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - PGDATA=/var/lib/postgresql/docker/data
+    volumes:
+    - db-data:/var/lib/postgresql/data
+    networks:
+    - main
+  webserver:
+    build:
+      context: ..
+      dockerfile: docker-jar/Dockerfile
+    container_name: webserver
+    hostname: webserver
+    depends_on:
+    - postgres
+    ports:
+    - "9090:9090"
+    networks:
+    - main
+volumes:
+  db-data:
+networks:
+  main:

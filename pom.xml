@@ -11,7 +11,7 @@
 	<groupId>com.boring-company</groupId>
 	<artifactId>note-list</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<!--<packaging>war</packaging>-->
 	<name>note-list</name>
 	<description>Notes CRUD</description>
 
@@ -35,6 +35,13 @@
   <profiles>
     <profile>
       <id>test</id>
+      <properties>
+        <packaging>war</packaging>
+        <db.url>jdbc:postgresql://postgres:5432/notelist</db.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>testJar</id>
       <properties>
         <db.url>jdbc:postgresql://postgres:5432/notelist</db.url>
       </properties>
