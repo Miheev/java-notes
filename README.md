@@ -16,6 +16,10 @@ Template for Simple Java Spring Web App
 - Simple UI for notes CRUD managment
 - DB configuration inside POM
 
+## Requirements
+- Apache Maven 3.6.0 (maven wrapper included into project, `./mvnw`)
+- Java version: 1.8 (tested with `1.8.0_131`)
+
 ## Run application
 - from local environment:
   - PostgreSQL server should be up and running on `localhost:5432`, tested with `9.5 and 11.5 version`.
