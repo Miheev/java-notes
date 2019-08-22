@@ -51,6 +51,9 @@ public final class Note implements Serializable {
     }
 
     Note note = (Note) obj;
+    /*
+     * Can be used only ID check due to entity usually distinguished by id
+     */
     return id == note.getId()
       && Objects.equals(name, note.getName())
       && Objects.equals(description, note.getDescription());
