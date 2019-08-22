@@ -8,9 +8,9 @@ case $1 in
     cp -rf src/main/webapp/app src/main/resources/static/app
     ./mvnw clean install -P testJar -DskipTests;
 
-#    docker-compose -f docker-jar/docker-compose.yml up -d;
+    docker-compose -f docker-jar/docker-compose.yml up -d;
     #With force image rebuild
-    docker-compose -f docker-jar/docker-compose.yml up -d --build;
+#    docker-compose -f docker-jar/docker-compose.yml up -d --build;
 
     echo "";
     echo "Server Url: http://localhost:9090";
